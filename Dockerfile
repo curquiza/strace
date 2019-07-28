@@ -1,6 +1,8 @@
 # FROM ubuntu:14.10
 FROM    ubuntu:18.04
 
+COPY    ./entrypoint.sh /
+
 RUN     rm /etc/dpkg/dpkg.cfg.d/excludes && \
         apt-get update && \
         apt-get upgrade && \
@@ -13,6 +15,7 @@ RUN     rm /etc/dpkg/dpkg.cfg.d/excludes && \
         dpkg -l | grep ^ii | cut -d' ' -f3 | xargs apt-get install -y --reinstall && \
         rm -r /var/lib/apt/lists/*
 
+ENTRYPOINT [ "/entrypoint.sh" ]
 
 # docker build --tag ft_strace .
 # docker run -it --name strace_devenv --rm --security-opt seccomp:unconfined -v ~/Documents/strace:/strace ft_strace
